@@ -18,11 +18,11 @@ async function create(req, res, next) {
 }
 
 async function detail(req, res, next) {
-  res.status(200).json({ message: "hitting queries detail" });
+  res.status(200).json(await Query.findById(req.params.id));
 }
 
 async function destroy(req, res, next) {
-  res.status(200).json({ message: "hitting queries delete" });
+  res.status(204).json(await Query.findByIdAndRemove(req.params.id));
 }
 
 module.exports = {
