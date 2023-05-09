@@ -1,13 +1,15 @@
 const express = require('express')
 const router = express.Router()
+const queriesRouter = require('../controllers/queries-controller')
 
-router.get("/", async (req, res) => {
-	res.status(200).json({message: "queries index route"})
-});
-
-router.post('/', async (req, res) => {
-    res.status(200).json({message: "queries create route"})
-})
+// INDEX
+router.get("/", queriesRouter.index);
+// CREATE
+router.post('/', queriesRouter.create)
+// SHOW/DETAILS
+router.get("/:id", queriesRouter.getOne);
+// DELETE
+router.delete("/:id", queriesRouter.delete);
 
 module.exports = router
 
