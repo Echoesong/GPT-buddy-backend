@@ -2,7 +2,11 @@ const express = require("express");
 const { Query } = require("../models");
 
 async function index(req, res, next) {
-  res.status(200).json({ message: "hitting queries index" });
+  try{
+    res.status(200).json(await Query.find())
+  } catch(err){
+    res.status(400).json({error: err.message })
+  }
 }
 
 async function create(req, res, next) {
