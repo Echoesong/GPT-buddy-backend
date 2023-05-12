@@ -1,15 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const queriesRouter = require('../controllers/queries-controller')
+const queriesCtrl = require('../controllers/queries-controller')
+const getGPT = require('../middleware/openAi')
 
 // INDEX
-router.get("/", queriesRouter.index);
+router.get("/", queriesCtrl.index);
 // CREATE
-router.post('/', queriesRouter.create)
+router.post('/', getGPT, queriesCtrl.create)
 // SHOW/DETAILS
-router.get("/:id", queriesRouter.getOne);
+router.get("/:id", queriesCtrl.getOne);
 // DELETE
-router.delete("/:id", queriesRouter.delete);
+router.delete("/:id", queriesCtrl.delete);
 
 module.exports = router
 

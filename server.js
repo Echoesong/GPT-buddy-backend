@@ -7,17 +7,9 @@ const express = require("express");
 const queriesRouter = require('./routes/queries-router.js')
 const cors = require("cors")
 const morgan = require("morgan")
-
-const { PORT, AUTH0_SECRET, AUTH0_CLIENTID, AUTH0_BASEURL} = process.env;
-
-const app = express();
-
-///////////////////////////////
-// MiddleWare
-////////////////////////////////
-
 const { auth } = require('express-openid-connect');
 
+const { PORT, AUTH0_SECRET, AUTH0_CLIENTID, AUTH0_BASEURL} = process.env;
 const config = {
   authRequired: false,
   auth0Logout: true,
@@ -27,9 +19,13 @@ const config = {
   issuerBaseURL: AUTH0_BASEURL
 };
 
-// auth router attaches /login, /logout, and /callback routes to the baseURL
+const app = express();
 
-// req.isAuthenticated is provided from the auth router
+///////////////////////////////
+// MiddleWare
+////////////////////////////////
+
+
 
 
 app.use(auth(config));
@@ -46,8 +42,10 @@ app.get('/', (req, res) => {
     res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
 
-
 app.use('/queries', queriesRouter)
+
+// HOME ROUTE 
+app.get('/', (req,res)=>res.send('hello react'))
 
 ///////////////////////////////
 // LISTENER
