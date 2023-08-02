@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-const {Configuration, OpenAIApi} = require('openai')
+const { Configuration, OpenAIApi } = require("openai");
 
 dotenv.config();
 const configuration = new Configuration({
@@ -19,15 +19,15 @@ async function fetchLLMResponse(req, res, next) {
     return;
   }
   try {
-    userPrompt = req.body.submission
+    userPrompt = req.body.submission;
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       max_tokens: 300,
-      prompt: `Based on the first all-caps word of the following query, provide either an answer to the question OR a summary of the text. First word = 'QUESTION', answer question. First word = 'SUMMARY', summarize. If unsure, default = answer question. Query: ${userPrompt}`,
+      prompt: `${userPrompt}`,
       temperature: 0.6,
     });
-    req.completionResult = completion.data.choices[0].text
-    next()
+    req.completionResult = completion.data.choices[0].text;
+    next();
   } catch (error) {
     if (error.response) {
       console.error(error.response.status, error.response.data);
@@ -41,6 +41,6 @@ async function fetchLLMResponse(req, res, next) {
       });
     }
   }
-};
+}
 
-module.exports = fetchLLMResponse
+module.exports = fetchLLMResponse;
