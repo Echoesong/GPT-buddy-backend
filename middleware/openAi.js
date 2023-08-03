@@ -19,14 +19,19 @@ async function fetchLLMResponse(req, res, next) {
     return;
   }
   try {
-    userPrompt = req.body.submission;
-    const completion = await openai.createCompletion({
-      model: "text-davinci-003",
+    const messages = [
+      { role: "system", content: "You are a helpful assistant." },
+      { role: "user", content: req.body.submission },
+    ];
+
+    const completion = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: messages,
       max_tokens: 300,
-      prompt: `${userPrompt}`,
       temperature: 0.6,
     });
-    req.completionResult = completion.data.choices[0].text;
+
+    req.completionResult = completion.data.choices[0].message.content;
     next();
   } catch (error) {
     if (error.response) {
